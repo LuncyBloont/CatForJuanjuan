@@ -38,7 +38,10 @@ cat.loop = (obj, delta, time) => {
 Game.push(cat)
 
 let lionCap = new Spirit('./images/Caps/Cap-lion', 2, 'png')
-let catCap = new Actor(new Vec2(-3.5, 4.5), arc(0), Vec2.one().scale(0.65), 'Bob', lionCap)
+let bygCap = new Spirit('./images/Caps/Cap-niuyg', 2, 'png')
+let orgCap = new Spirit('./images/Caps/Cap-Orange', 2, 'png')
+let fishS = new Spirit('./images/Fish', 2, 'png')
+let catCap = new Actor(new Vec2(-3.5, 4.5), arc(0), Vec2.one().scale(0.65), 'Bob', orgCap)
 cat.push(catCap)
 catCap.loop = (obj, delta, time) => {
     obj.rotation = Math.cos(time * 0.007) * 0.04
@@ -87,5 +90,20 @@ hand.update = (obj, d, t) => {
 
 }
 Game.push(hand)
+
+let fishBut = new Actor(new Vec2(128 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', fishS.copy())
+fishBut.spirit.life = 0.002
+let cap0But = new Actor(new Vec2(256 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', lionCap.copy())
+let cap1But = new Actor(new Vec2(384 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', bygCap.copy())
+let cap2But = new Actor(new Vec2(512 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', orgCap.copy())
+
+fishBut.z = 102
+Game.push(fishBut)
+cap0But.z = 102
+Game.push(cap0But)
+cap1But.z = 102
+Game.push(cap1But)
+cap2But.z = 102
+Game.push(cap2But)
 
 console.log(Game)

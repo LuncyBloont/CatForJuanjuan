@@ -31,4 +31,12 @@ export class Spirit {
         let pos = Math.floor((dur - Math.floor(dur)) * this.frame)
         return this.frames[pos]
     }
+
+    copy() {
+        let n = new Spirit(this.filename, this.frame, this.type)
+        for (let i in this) {
+            n[i] = this[i]
+        }
+        return n
+    }
 }
