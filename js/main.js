@@ -55,6 +55,7 @@ ball.life = 0.0
 catTalk.loop = (obj, d, t) => {
     obj.position = cat.position.add(new Vec2(72, -72))
     ball.time = clamp(cat.happy, -1.0, 1.0) * 0.5 + 0.49
+    console.log(cat.happy)
 }
 catTalk.z = 101
 Game.push(catTalk)
