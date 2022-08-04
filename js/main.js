@@ -79,7 +79,7 @@ hand.update = (obj, d, t) => {
         handS.time = 0.7
         obj.m_touch = true
         if (Vec2.distance(obj.position, cat.position) < 64) {
-            cat.scale = new Vec2(6.0, 5.5)
+            cat.scale = new Vec2(5.9, 5.5)
             cat.happy += (Math.random() - 0.4) * 0.2
         }
     }
