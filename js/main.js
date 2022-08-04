@@ -19,7 +19,7 @@ cat.start = (obj) => {
 }
 cat.loop = (obj, delta, time) => {
     obj.spirit.life = obj.speed * 0.3
-    if (time % 200 <= 0) {
+    if (Game.frame % 200 <= 0) {
         obj.m_target = Math.random() * Game.canvas.width * 0.8 + 0.1 * Game.canvas.width
     }
     

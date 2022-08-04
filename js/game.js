@@ -14,6 +14,7 @@ export class Game {
     static mousey = 0.0
     static mouseDown = false
     static mouseUp = false
+    static frame = 0
 
     static time() {
         return (Game.gameTimeLogic + Game.gameTimeRender) * 0.5 / 1000.0
@@ -88,6 +89,7 @@ export class Game {
         if (Game.rendering) {
             requestAnimationFrame(Game.renderLoop)
         }
+        Game.frame += 1
 
         Game.mouseDown = false
         Game.mouseUp = false
