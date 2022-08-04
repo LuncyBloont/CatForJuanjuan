@@ -49,7 +49,7 @@ catCap.loop = (obj, delta, time) => {
 }
 catCap.z = 1
 
-let ball = new Spirit('./images/ball', 6, 'png')
+let ball = new Spirit('./images/Msg', 6, 'png')
 let catTalk = new Actor(Vec2.zero(), 0, Vec2.one().scale(3.0), 'CatTalk', ball)
 ball.life = 0.0
 catTalk.loop = (obj, d, t) => {
