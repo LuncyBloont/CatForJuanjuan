@@ -57,7 +57,7 @@ export class Vec2 {
     }
 
     static distance(v1, v2) {
-        return Math.sqrt(Math.pow(v1.x - v2.x, 2.0), Math.pow(v1.y - v2.y, 2.0))
+        return Math.sqrt(Math.pow(v1.x - v2.x, 2.0) + Math.pow(v1.y - v2.y, 2.0))
     }
 
     static one() { return new Vec2(1.0, 1.0) }
