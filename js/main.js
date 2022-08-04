@@ -66,10 +66,25 @@ let handS = new Spirit('../images/hand', 2, 'png')
 let hand = new Actor(Vec2.zero(), 0, Vec2.one().scale(3.0), 'Hand', handS)
 hand.z = 1000
 handS.life = 0.0
+hand.start = (obj) => {
+    obj.m_touch = false
+}
 hand.update = (obj, d, t) => {
     obj.position = new Vec2(Game.mousex, Game.mousey)
-    if (Game.mouseDown) handS.time = 0.7
-    if (Game.mouseUp) handS.time = 0.0
+    if (Game.mouseDown) { 
+        handS.time = 0.7
+        obj.m_touch = true
+        if (Vec2.distance(obj.position, cat.position) < 64) {
+            cat.scale = new Vec2(6.0, 5.5)
+            cat.happy += (Math.random() - 0.4) * 0.1
+        }
+    }
+    if (Game.mouseUp) {
+        handS.time = 0.0
+        obj.m_touch = false
+        cat.scale = new Vec2(6.0, 6.0)
+    }
+
 }
 Game.push(hand)
 
