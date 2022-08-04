@@ -54,7 +54,7 @@ let catTalk = new Actor(Vec2.zero(), 0, Vec2.one().scale(3.0), 'CatTalk', ball)
 ball.life = 0.0
 catTalk.loop = (obj, d, t) => {
     obj.position = cat.position.add(new Vec2(72, -72))
-    ball.time = cat.happy * 0.5 + 0.5
+    ball.time = clamp(cat.happy, 0.0, 1.0) * 0.5 + 0.49
     console.log(cat.happy)
 }
 catTalk.z = 101
@@ -93,7 +93,7 @@ hand.update = (obj, d, t) => {
 Game.push(hand)
 
 let button = (obj, d, t) => {
-    if (Vec2.distance(obj.position, new Vec2(Game.mousex, Game.mousey)) < 24) {
+    if (Vec2.distance(obj.position, new Vec2(Game.mousex, Game.mousey)) < 32) {
         if (Game.mouseDown) {
             obj.m_do()
         }
@@ -115,9 +115,10 @@ fishBut.m_do = () => {
         Math.random() * Math.PI * 2.0, Vec2.one().scale(2.0), 'Fish0', fishBut.spirit.copy())
     ff.m_r = Math.random() - 0.5
     ff.z = 7
+    ff.spirit.time = 0.0
     ff.loop = (obj, d, t) => {
         if (obj.position.y > ground + 48) {
-            if (Vec2.distance(obj.position, cat.position) < 32) {
+            if (Vec2.distance(obj.position, cat.position) <64) {
                 obj.alive = false
                 cat.happy += 0.1
             }
