@@ -55,7 +55,6 @@ ball.life = 0.0
 catTalk.loop = (obj, d, t) => {
     obj.position = cat.position.add(new Vec2(72, -72))
     ball.time = clamp(cat.happy, 0.0, 1.0) * 0.5 + 0.49
-    console.log(cat.happy)
 }
 catTalk.z = 101
 Game.push(catTalk)
@@ -153,3 +152,20 @@ cap2But.z = 102
 Game.push(cap2But)
 
 console.log(Game)
+
+let heap = new Heap(1e9)
+heap.push('xx', 0)
+heap.push('xx-1', -1)
+heap.push('xx9', 9)
+heap.push('xx9', 9)
+heap.push('xx9', -1)
+heap.push('xx9', 4)
+heap.push('xx9', -5)
+heap.push('xx9', 12)
+heap.push('xx9', 3)
+heap.push('xx9', 9)
+heap.push('xx9', -34)
+
+while (heap.size > 0) {
+    console.log(heap.pop().key)
+}

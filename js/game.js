@@ -112,12 +112,17 @@ export class Game {
     }
 
     static drawSpirit(spirit, matrix) {
-        if (!spirit.show) return
+        if (spirit == undefined || !spirit.show) return
         Game.render.save()
-        Game.render.transform(matrix.i00, matrix.i01, matrix.i10, matrix.i11, matrix.i02, matrix.i12)
-        let img = spirit.getFrame()
-        Game.render.drawImage(img, -spirit.center.x * img.width, -spirit.center.y * img.height)
+        try {
+            Game.render.transform(matrix.i00, matrix.i01, matrix.i10, matrix.i11, matrix.i02, matrix.i12)
+            let img = spirit.getFrame()
+            Game.render.drawImage(img, -spirit.center.x * img.width, -spirit.center.y * img.height)
+        } catch (err) {
+            console.warn(err)
+        }
         Game.render.restore()
+        
     }
 }
 
