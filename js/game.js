@@ -211,19 +211,16 @@ export class Heap {
         let right = heapRight(pos)
         while (left < this.size) {
             let change = false
-            if (this.arr[pos].key > this.arr[left].key) {
-                let ex = this.arr[pos]
-                this.arr[pos] = this.arr[left]
-                this.arr[left] = ex
-                change = true
-                pos = left
+            let chose = left
+            if (right < this.size) {
+                chose = this.arr[left].key <= this.arr[right].key ? left : right
             }
-            if (right < this.size && this.arr[pos].key > this.arr[right].key) {
+            if (this.arr[pos].key > this.arr[chose].key) {
                 let ex = this.arr[pos]
-                this.arr[pos] = this.arr[right]
-                this.arr[right] = ex
+                this.arr[pos] = this.arr[chose]
+                this.arr[chose] = ex
                 change = true
-                pos = right
+                pos = chose
             }
 
             left = heapLeft(pos)
