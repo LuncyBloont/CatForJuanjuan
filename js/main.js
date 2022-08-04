@@ -8,7 +8,8 @@ Game.start(10);
 
 let catSpirit = new Spirit('./images/BigOrange/BigOrange', 5, 'png')
 catSpirit.life = 0.002
-let cat = new Actor(new Vec2(Game.canvas.width * 0.5, Game.canvas.height * 0.7),
+let ground = Game.canvas.height * 0.7
+let cat = new Actor(new Vec2(Game.canvas.width * 0.5, ground),
     0.0, Vec2.one(), 'Cat', catSpirit)
 cat.scale = new Vec2(6.0, 6.0)
 cat.start = (obj) => {
@@ -91,11 +92,55 @@ hand.update = (obj, d, t) => {
 }
 Game.push(hand)
 
+let button = (obj, d, t) => {
+    if (Vec2.distance(obj.position, new Vec2(Game.mousex, Game.mousey)) < 24) {
+        if (Game.mouseDown) {
+            obj.m_do()
+        }
+    }
+}
+
 let fishBut = new Actor(new Vec2(128 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', fishS.copy())
 fishBut.spirit.life = 0.002
 let cap0But = new Actor(new Vec2(256 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', lionCap.copy())
 let cap1But = new Actor(new Vec2(384 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', bygCap.copy())
 let cap2But = new Actor(new Vec2(512 + 256, 64), 0, Vec2.one().scale(3), 'FishButton', orgCap.copy())
+
+fishBut.update = button
+cap0But.update = button
+cap1But.update = button
+cap2But.update = button
+fishBut.m_do = () => {
+    let ff = new Actor(new Vec2(Math.random() * Game.canvas.width * 0.8 + 0.1 * Game.canvas.width, 128),
+        Math.random() * Math.PI * 2.0, Vec2.one().scale(2.0), 'Fish0', fishBut.spirit.copy())
+    ff.m_r = Math.random() - 0.5
+    ff.z = 7
+    ff.loop = (obj, d, t) => {
+        if (obj.position.y > ground + 48) {
+            if (Vec2.distance(obj.position, cat.position) < 32) {
+                obj.alive = false
+                cat.happy += 0.1
+            }
+        } else {
+            obj.position.y += 0.08 * d
+            obj.rotation += 0.01 * d * obj.m_r
+        }
+    }
+    Game.push(ff)
+}
+
+cap0But.m_do = () => {
+    catCap.spirit = cap0But.spirit.copy()
+    cat.happy += 0.05
+}
+cap1But.m_do = () => {
+    catCap.spirit = cap1But.spirit.copy()
+    cat.happy += 0.05
+}
+cap2But.m_do = () => {
+    catCap.spirit = cap2But.spirit.copy()
+    cat.happy += 0.05
+}
 
 fishBut.z = 102
 Game.push(fishBut)
