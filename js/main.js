@@ -6,7 +6,7 @@ import { arc, clamp, lerp, Vec2 } from './basic.js'
 Game.initialize('canvas')
 Game.start(10);
 
-let catSpirit = new Spirit('../images/BigOrange/BigOrange', 5, 'png')
+let catSpirit = new Spirit('/images/BigOrange/BigOrange', 5, 'png')
 catSpirit.life = 0.002
 let cat = new Actor(new Vec2(Game.canvas.width * 0.5, Game.canvas.height * 0.7),
     0.0, Vec2.one(), 'Cat', catSpirit)
@@ -37,7 +37,7 @@ cat.loop = (obj, delta, time) => {
 }
 Game.push(cat)
 
-let lionCap = new Spirit('../images/Caps/Cap-lion', 2, 'png')
+let lionCap = new Spirit('/images/Caps/Cap-lion', 2, 'png')
 let catCap = new Actor(new Vec2(-3.5, 4.5), arc(0), Vec2.one().scale(0.65), 'Bob', lionCap)
 cat.push(catCap)
 catCap.loop = (obj, delta, time) => {
@@ -45,7 +45,7 @@ catCap.loop = (obj, delta, time) => {
 }
 catCap.z = 1
 
-let ball = new Spirit('../images/ball', 6, 'png')
+let ball = new Spirit('/images/ball', 6, 'png')
 let catTalk = new Actor(Vec2.zero(), 0, Vec2.one().scale(3.0), 'CatTalk', ball)
 ball.life = 0.0
 catTalk.loop = (obj, d, t) => {
@@ -56,13 +56,13 @@ catTalk.loop = (obj, d, t) => {
 catTalk.z = 101
 Game.push(catTalk)
 
-let walls = new Spirit('../images/wall', 2, 'png')
+let walls = new Spirit('/images/wall', 2, 'png')
 let wall = new Actor(new Vec2(Game.canvas.width * 0.5, Game.canvas.height * 0.5), 
     0.0, new Vec2(2.0, 2.0).scale(canvas.height / 1024.0), 'wall', walls)
 wall.z = -101
 Game.push(wall)
 
-let handS = new Spirit('../images/hand', 2, 'png')
+let handS = new Spirit('/images/hand', 2, 'png')
 let hand = new Actor(Vec2.zero(), 0, Vec2.one().scale(3.0), 'Hand', handS)
 hand.z = 1000
 handS.life = 0.0
