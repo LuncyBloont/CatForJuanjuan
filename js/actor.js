@@ -1,14 +1,22 @@
-import { Spirit } from './spirit.js'
+import { Sprite } from './sprite.js'
 import { Matrix, mulMM, Size, Vec2 } from './basic.js'
 import { checkList, Game } from './game.js'
 
 export class Actor {
-    constructor(position, rotation, scale, name, spirit = null) {
+    /**
+     * 
+     * @param {Vec2} position actor local position
+     * @param {number} rotation local rotation
+     * @param {Vec2} scale local scale
+     * @param {string} name actor nume
+     * @param {Sprite} sprite actor sprite
+     */
+    constructor(position, rotation, scale, name, sprite = null) {
         this.position = position
         this.rotation = rotation
         this.scale = scale
         this.name = name
-        this.spirit = spirit
+        this.sprite = sprite
         this.update = (obj, delta, time) => {}
         this.start = (obj) => {}
         this.loop = (obj, delta, time) => {}
@@ -42,8 +50,8 @@ export class Actor {
         for (let i = 0; i < this.children.length; i++) {
             this.children[i].renderFrame(delta, time)
         }
-        this.spirit.update(delta)
-        Game.drawSpirit(this.spirit, this.matrix)
+        if (this.sprite != null) { this.sprite.update(delta) }
+        Game.drawSprite(this.sprite, this.matrix)
     }
 
     updateMatrix() {

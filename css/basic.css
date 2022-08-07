@@ -6,6 +6,7 @@
     top: 0px;
     z-index: 5;
     background: #888888;
+    cursor: none;
 }
 
 .face {

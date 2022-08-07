@@ -48,6 +48,10 @@ export class Vec2 {
         return new Vec2(this.x, this.y)
     }
 
+    abs() {
+        return new Vec2(Math.abs(this.x), Math.abs(this.y))
+    }
+
     static dot(v1, v2) {
         return v1.x * v2.x + v1.y * v2.y
     }
@@ -58,6 +62,10 @@ export class Vec2 {
 
     static distance(v1, v2) {
         return Math.sqrt(Math.pow(v1.x - v2.x, 2.0) + Math.pow(v1.y - v2.y, 2.0))
+    }
+
+    static pow(v, p) {
+        return new Vec2(Math.pow(v.x, p.x), Math.pow(v.y, p.y))
     }
 
     static one() { return new Vec2(1.0, 1.0) }

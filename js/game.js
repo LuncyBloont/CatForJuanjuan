@@ -1,6 +1,20 @@
+import { Actor } from './actor.js'
+import { Vec2 } from './basic.js'
+
+export * from './actor.js'
+export * from './sprite.js'
+export * from './basic.js'
+export * from './geometry.js'
+export * from './gizmo.js'
 
 export class Game {
-    static name = 'Game'
+    /**
+     * @type {Array<string>}
+     */
+    static games = {}
+    /**
+     * @type {CanvasRenderingContext2D} drawer
+     */
     static render = null
     static canvas = null
     static rendering = false
@@ -12,6 +26,7 @@ export class Game {
     static deltaRender = 0.01
     static mousex = 0.0
     static mousey = 0.0
+    static mouse = new Vec2(0.0, 0.0)
     static mouseDown = false
     static mouseUp = false
     static frame = 0
@@ -29,22 +44,30 @@ export class Game {
             console.error('没有该画布' + canvasid)
         }
         Game.render = Game.canvas.getContext('2d')
-        Game.render.imageSmoothingEnabled  = false
+        Game.render.imageSmoothingEnabled = false
         Game.render.imageSmoothingQuality = 'low'
         Game.canvas.addEventListener('mousedown', (e) => {
             Game.mousex = e.clientX
             Game.mousey = e.clientY
+            Game.mouse.x = Game.mousex
+            Game.mouse.y = Game.mousey
             Game.mouseDown = true
         })
         Game.canvas.addEventListener('mousemove', (e) => {
             Game.mousex = e.clientX
             Game.mousey = e.clientY
+            Game.mouse.x = Game.mousex
+            Game.mouse.y = Game.mousey
         })
         Game.canvas.addEventListener('mouseup', (e) => {
             Game.mousex = e.clientX
             Game.mousey = e.clientY
+            Game.mouse.x = Game.mousex
+            Game.mouse.y = Game.mousey
             Game.mouseUp = true
         })
+
+        Game.games['default'] = Game.actors
     }
 
     static logicLoop() {
@@ -103,6 +126,49 @@ export class Game {
         Game.gameTimeRender = Date.now()
     }
 
+    static createGame(name) {
+        Game.games[name] = []
+    }
+
+    static switch(name) {
+        let warn = new Actor(Vec2.zero(), 0, Vec2.one, 'Warn')
+        warn.start = (obj, delta, time) => { console.error('Invalid game name: ' + name) }
+        Game.actors = (Game.games[name] != undefined ? Game.games[name] : [warn])
+
+        let restart = (obj) => {
+            obj.initialize()
+            for (let k in obj.children) {
+                obj.children[k].initialize()
+                restart(obj.children[k])
+            }
+        }
+        for (let k in Game.actors) {
+            restart(Game.actors[k])
+        }
+    }
+
+    static deleteGame(name) {
+        Game.games[name] = undefined
+    }
+
+    static find(name) {
+        for (let i in Game.actors) {
+            if (Game.actors[i].name == name) {
+                return Game.actors[i]
+            }
+        }
+    }
+
+    static findAll(name) {
+        let res = []
+        for (let i in Game.actors) {
+            if (Game.actors[i].name == name) {
+                res.push(Game.actors[i])
+            }
+        }
+        return res
+    }
+
     static stop() {
         Game.rendering = false
         clearInterval(Game.logicThread)
@@ -113,18 +179,18 @@ export class Game {
         child.initialize()
     }
 
-    static drawSpirit(spirit, matrix) {
-        if (spirit == undefined || !spirit.show) return
+    static drawSprite(sprite, matrix) {
+        if (sprite == null || !sprite.show) return
         Game.render.save()
         try {
             Game.render.transform(matrix.i00, matrix.i01, matrix.i10, matrix.i11, matrix.i02, matrix.i12)
-            let img = spirit.getFrame()
-            Game.render.drawImage(img, -spirit.center.x * img.width, -spirit.center.y * img.height)
+            let img = sprite.getFrame()
+            Game.render.drawImage(img, -sprite.center.x * img.width, -sprite.center.y * img.height)
         } catch (err) {
             console.warn(err)
         }
         Game.render.restore()
-        
+
     }
 }
 
@@ -176,11 +242,11 @@ export class Heap {
 
     push(obj, key) {
         this.moreSize()
-        
+
         let pos = this.size
         this.size += 1
         this.arr[pos] = new Sortable(obj, key)
-        
+
         let parent = heapParent(pos)
         while (parent >= 0) {
             if (this.arr[parent].key > key) {
