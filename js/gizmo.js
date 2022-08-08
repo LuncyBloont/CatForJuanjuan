@@ -60,6 +60,22 @@ export function gizAABB(aabb, context = GizmoContext.BT1) {
 
 /**
  * 
+ * @param {AABB} aabb 
+ * @param {GizmoContext} context
+ */
+ export function gizWireAABB(aabb, context = GizmoContext.BT1) {
+    Game.render.save()
+    try {
+        useContext(context)
+        Game.render.strokeRect(aabb.min.x, aabb.min.y, aabb.max.minus(aabb.min).x, aabb.max.minus(aabb.min).y)
+    } catch (err) {
+        console.log(err)
+    }
+    Game.render.restore()
+}
+
+/**
+ * 
  * @param {Vec2} point 
  * @param {GizmoContext} context 
  */

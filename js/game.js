@@ -1,5 +1,8 @@
 import { Actor } from './actor.js'
-import { Vec2 } from './basic.js'
+import { Matrix, Vec2 } from './basic.js'
+import { AABB } from './geometry.js'
+import { gizAABB, gizWireAABB } from './gizmo.js'
+import { Sprite } from './sprite.js'
 
 export * from './actor.js'
 export * from './sprite.js'
@@ -191,6 +194,66 @@ export class Game {
         }
         Game.render.restore()
 
+    }
+
+    /**
+     * 
+     * @param {Vec2} pos 
+     * @param {Sprite} sprite 
+     * @param {string} char 
+     * @param {Vec2} scale 
+     */
+    static drawChar(pos, sprite, char, scale) {
+        let img = sprite.frames[char.charCodeAt(0) - 32]
+        if (img != undefined) {
+            Game.render.drawImage(img, pos.x - img.width * scale.x * sprite.center.x,
+                pos.y - img.height * scale.y * sprite.center.y,
+                img.width * scale.x, img.height * scale.y)
+        }
+    }
+
+    /**
+     * 
+     * @param {Matrix} pos
+     * @param {number} col
+     * @param {number} raw
+     * @param {Sprite} sprite 
+     * @param {string} str 
+     * @param {number} space 
+     * @param {number} linespace 
+     * @param {Vec2} scale 
+     * @param {Vec2} center
+     */
+    static drawText(matrix, col, raw, sprite, str, space, linespace, scale, center) {
+        Game.render.save()
+        try {
+            Game.render.transform(matrix.i00, matrix.i01, matrix.i10, matrix.i11, matrix.i02, matrix.i12)
+            let width = col * space
+            let height = raw * linespace
+            let pos = center.inverse().multi(new Vec2(width, height))
+            let rawIndex = 0
+            let colIndex = 0
+            for (let i = 0; i < str.length; i++) {
+                if (colIndex >= col) {
+                    colIndex = 0
+                    rawIndex += 1
+                }
+                if (str[i] == '\n' || str[i] == '\r') {
+                    colIndex = 0
+                    rawIndex += 1
+                }
+                if (rawIndex >= raw) {
+                    break
+                }
+                let char = str[i] == '\t' ? ' ' : str[i]
+                Game.drawChar(pos.add(new Vec2(colIndex * space, rawIndex * linespace)), sprite, char, scale)
+                colIndex += 1
+            }
+            // gizWireAABB(new AABB(pos, pos.add(new Vec2(width, height))))
+        } catch (err) {
+            console.log(err)
+        }
+        Game.render.restore()
     }
 }
 
