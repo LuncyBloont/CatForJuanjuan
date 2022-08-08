@@ -1,4 +1,4 @@
-import { Game, Sprite, Actor, arc, clamp, lerp, Vec2 } from '../js/game.js'
+import { Game, Sprite, Actor, arc, clamp, lerp, Vec2, lerpV } from '../js/game.js'
 
 export function homeDef() {
     let catSprite = new Sprite('./images/BigOrange/BigOrange', 5, 'png')
@@ -68,7 +68,7 @@ export function homeDef() {
         obj.m_touch = false
     }
     hand.update = (obj, d, t) => {
-        obj.position = Game.mouse.copy()
+        obj.position = lerpV(obj.position, Game.mouse, 0.3)
         if (Game.mouseDown) {
             handS.time = 0.7
             obj.m_touch = true
